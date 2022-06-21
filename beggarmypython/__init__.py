@@ -3,6 +3,7 @@ def penalty_value_of(card):
     return values[card]
 
 def play(hands,firstCardOnLeft=True,verbose=False):
+    seen = set(hands)
     a,b = hands #hands are called a and b
     print("Starting hands: %s/%s" % (a, b))
     if not firstCardOnLeft:
@@ -56,6 +57,13 @@ def play(hands,firstCardOnLeft=True,verbose=False):
         
         
         player = player*-1
+
+        #check if this is a combination we've seen before
+        test = (a,b) if player == 1 else (b,a)
+        if test in seen:
+            print(f"There was a loop after {turns} turns and {tricks} tricks")
+            return
+        seen.add(test)
         
         #print current status
         if verbose:
